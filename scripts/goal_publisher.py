@@ -68,10 +68,10 @@ def send_new_goal(goal_index):
 if __name__ == "__main__":
     rospy.init_node('goal_publisher')
 
+    rospy.sleep(15)
+
     # Create a SimpleActionClient for the move_base action server
     client = actionlib.SimpleActionClient('move_base', MoveBaseAction)
-
-    
 
     # Wait for the action server to become available
     rospy.loginfo("Waiting for move_base action server...")
