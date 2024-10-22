@@ -44,8 +44,14 @@
   <!-- rviz -->
   <node pkg="rviz" type="rviz" name="rviz" required="true" args="-d $(find rrt_planner)/rviz/rrt_turtlebot_sim.rviz"/>
 
-  <!-- Goal Publisher (Python script node) -->
+  <!-- Goal Publisher (Python script node) -->  
   <node pkg="rrt_planner" type="goal_publisher.py" name="goal_publisher" output="screen">
+    <param name="goal_list" value="[
+      (2.5867199897766113, 1.926358699798584, -0.6452002540628567, 0.7640135026013776),
+      (3.2087318897247314, -1.650550365447998, 0.8096074266721554, 0.5869717324346128),
+      (-2.3282997608184814, -2.214787721633911, 0.720515688571733, 0.6934386364502642),
+      (0.17406821250915527, -2.7023749351501465, -0.6122330393467115, 0.7906773713293482)
+    ]" />
+    <param name="start_delay" value="15" />  
   </node>
-  
 </launch>

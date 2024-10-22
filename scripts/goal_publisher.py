@@ -6,29 +6,10 @@ from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 from actionlib_msgs.msg import GoalStatusArray
 
 # List of goals (x, y, z, orientation_w) that will be sent to the robot
-
-# For Lab Map
-goal_list = [
-    (2.5867199897766113, 1.926358699798584, -0.6452002540628567, 0.7640135026013776),  # P1
-    (3.2087318897247314, -1.650550365447998, 0.8096074266721554, 0.5869717324346128),  # P2
-    (-2.3282997608184814, -2.214787721633911, 0.720515688571733, 0.6934386364502642),  # P3
-    (0.17406821250915527, -2.7023749351501465, -0.6122330393467115, 0.7906773713293482)  # P4
-]
-
-
-# For Gazebo
-# goal_list = [
-#     (2.0, -0.5, 0.0, 1.0),  # First goal
-#     (2.0, 0.5, 0.0, 1.0),  # Second goal
-#     (-2.0, 0.5, 0.0, 1.0),  # Third goal
-#     (-2.0, -0.5, 0.0, 1.0)  # Fourth goal
-# ]
+goal_list = []
 
 # Global index for the current goal
 current_goal_index = 0
-
-# Total number of goals
-total_goals = len(goal_list)
 
 # Callback function for the /move_base/status subscriber
 def status_callback(status_msg):
@@ -68,7 +49,14 @@ def send_new_goal(goal_index):
 if __name__ == "__main__":
     rospy.init_node('goal_publisher')
 
-    rospy.sleep(15)
+    start_delay = int(rospy.get_param('~start_delay', 0))
+    goal_list = eval(rospy.get_param('~goal_list', []))
+    total_goals = len(goal_list)
+
+    # rospy.loginfo(f"Got start delay of {start_delay}s")
+    # rospy.loginfo(f"Got goal list: {eval(goal_list)} of type {type(eval(goal_list))}")
+
+    rospy.sleep(start_delay)
 
     # Create a SimpleActionClient for the move_base action server
     client = actionlib.SimpleActionClient('move_base', MoveBaseAction)
