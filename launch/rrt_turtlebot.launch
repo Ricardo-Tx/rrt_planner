@@ -11,6 +11,9 @@
     <arg name="model" value="$(arg model)"/>
   </include>
 
+  <!-- Gazebo -->
+  <include file="$(find turtlebot3_gazebo)/launch/turtlebot3_world.launch"/>
+
   <!-- Map server -->
   <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
 
