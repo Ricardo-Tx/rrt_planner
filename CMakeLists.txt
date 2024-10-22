@@ -45,3 +45,11 @@ add_library(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
   ${catkin_LIBRARIES}
 )
+
+
+
+# compile all python programs in the scripts folder (makes them executable too)
+file(GLOB PYTHON_SCRIPTS "scripts/*.py")
+catkin_install_python(PROGRAMS ${PYTHON_SCRIPTS}
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
