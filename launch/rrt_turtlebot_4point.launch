@@ -49,11 +49,12 @@
 
   <!-- Goal Publisher (Python script node) -->
   <node pkg="rrt_planner" type="goal_publisher.py" name="goal_publisher" output="screen">
+    <!-- Goals take the form of [x, y, θ] or [x, y, qz, qw] -->
     <param name="goal_list" value="[
-      (2.0, -0.5, 0.0, 1.0),
-      (2.0, 0.5, 0.0, 1.0),
-      (-2.0, 0.5, 0.0, 1.0),
-      (-2.0, -0.5, 0.0, 1.0)
+      (2.0, -0.5, 1.57080),
+      (2.0, 0.5, 3.14159),
+      (-2.0, 0.5, -1.57080),
+      (-2.0, -0.5, 0.0)
     ]" />
     <param name="start_delay" value="0" />  
   </node>

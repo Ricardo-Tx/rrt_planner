@@ -4,8 +4,9 @@ import rospy
 import actionlib
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 from actionlib_msgs.msg import GoalStatusArray
+from math import sin, cos
 
-# List of goals (x, y, z, orientation_w) that will be sent to the robot
+# List of goals that will be sent to the robot
 goal_list = []
 
 # Global index for the current goal
@@ -34,37 +35,41 @@ def send_new_goal(goal_index):
     goal = MoveBaseGoal()
 
     # Define the goal position and orientation (coordinates from goal_list)
-    x, y, z, w = goal_list[goal_index]
+    goal_vct = goal_list[goal_index]
     goal.target_pose.header.frame_id = "map"
     goal.target_pose.header.stamp = rospy.Time.now()
-    goal.target_pose.pose.position.x = x
-    goal.target_pose.pose.position.y = y
-    goal.target_pose.pose.position.z = z
-    goal.target_pose.pose.orientation.w = w
+    goal.target_pose.pose.position.x = goal_vct[0]
+    goal.target_pose.pose.position.y = goal_vct[1]
+    if(len(goal_vct) == 3):
+        # goal_vct = [x, y, θ (rad)]. convert θ to qz, qw.
+        goal.target_pose.pose.orientation.z = sin(goal_vct[2]*0.5)
+        goal.target_pose.pose.orientation.w = cos(goal_vct[2]*0.5)
+    elif(len(goal_vct) == 4):
+        # goal_vct = [x, y, qz, qw]
+        goal.target_pose.pose.orientation.z = goal_vct[2]
+        goal.target_pose.pose.orientation.w = goal_vct[3]
 
     # Send goal
     client.send_goal(goal)
-    rospy.loginfo(f"New goal sent: x = {x}, y = {y} ({goal_index + 1}/{total_goals})")
+    rospy.loginfo(f"New goal sent: x = {goal_vct[0]}, y = {goal_vct[1]} ({goal_index + 1}/{total_goals})")
 
 if __name__ == "__main__":
     rospy.init_node('goal_publisher')
 
+    # parse the ros parameters. eval() evaluates a string with an expression as python code
     start_delay = int(rospy.get_param('~start_delay', 0))
     goal_list = eval(rospy.get_param('~goal_list', []))
+
     total_goals = len(goal_list)
 
-    # rospy.loginfo(f"Got start delay of {start_delay}s")
-    # rospy.loginfo(f"Got goal list: {eval(goal_list)} of type {type(eval(goal_list))}")
-
+    # sleeping so we have time to set the pose in rviz, for lab runs
     rospy.sleep(start_delay)
 
     # Create a SimpleActionClient for the move_base action server
+    # ... and wait for the action server to become available
     client = actionlib.SimpleActionClient('move_base', MoveBaseAction)
-
-    # Wait for the action server to become available
     rospy.loginfo("Waiting for move_base action server...")
     client.wait_for_server()
-
     rospy.loginfo("Connected to move_base action server")
 
     # Subscribe to the /move_base/status topic

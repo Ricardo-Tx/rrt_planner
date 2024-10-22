@@ -46,6 +46,7 @@
 
   <!-- Goal Publisher (Python script node) -->  
   <node pkg="rrt_planner" type="goal_publisher.py" name="goal_publisher" output="screen">
+    <!-- Goals take the form of [x, y, θ] or [x, y, qz, qw] -->
     <param name="goal_list" value="[
       (2.5867199897766113, 1.926358699798584, -0.6452002540628567, 0.7640135026013776),
       (3.2087318897247314, -1.650550365447998, 0.8096074266721554, 0.5869717324346128),
