@@ -24,7 +24,7 @@
   <include file="$(find turtlebot3_navigation)/launch/amcl.launch">
     <arg name="initial_pose_x" default="1.0649058818817139"/>
     <arg name="initial_pose_y" default="-0.4352462589740753"/>
-    <arg name="initial_pose_a" default="-1.6304725"/>
+    <arg name="initial_pose_a" default="1.6304725"/>
   </include>
 
   <!-- move_base -->
