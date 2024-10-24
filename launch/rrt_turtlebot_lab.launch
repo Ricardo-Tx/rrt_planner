@@ -12,9 +12,10 @@
   </include>
 
   <!-- Gazebo (only runs if computer is connected to localhost)-->
-  <include file="$(find turtlebot3_gazebo)/launch/turtlebot3_empty_world.launch">
-    <if value="$(env ROS_MASTER_URI) == http://localhost:11311" />
-  </include>
+  <arg name="ros_master_uri" default="$(env ROS_MASTER_URI)" />
+  <group if="$(eval arg('ros_master_uri') == 'http://localhost:11311')">
+    <include file="$(find turtlebot3_gazebo)/launch/turtlebot3_empty_world.launch"/>
+  </group>
 
   <!-- Map server -->
   <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
