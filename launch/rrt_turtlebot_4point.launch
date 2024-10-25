@@ -5,6 +5,7 @@
   <arg name="move_forward_only" default="false"/>
   <arg name="cmd_vel_topic" default="/cmd_vel"/>
   <arg name="odom_topic" default="odom"/>
+  <arg name="param_set" default="confident"/>
 
   <!-- Turtlebot3 -->
   <include file="$(find turtlebot3_bringup)/launch/turtlebot3_remote.launch">
@@ -35,12 +36,12 @@
     <param name="base_global_planner" value="rrt_planner/RRTPlannerROS"/>
     <rosparam file="$(find rrt_planner)/config/rrt_planner.yaml" command="load"/>
 
-    <rosparam file="$(find rrt_planner)/param/costmap_common_params_$(arg model).yaml" command="load" ns="global_costmap" />
-    <rosparam file="$(find rrt_planner)/param/costmap_common_params_$(arg model).yaml" command="load" ns="local_costmap" />
-    <rosparam file="$(find rrt_planner)/param/local_costmap_params.yaml" command="load" />
-    <rosparam file="$(find rrt_planner)/param/global_costmap_params.yaml" command="load" />
-    <rosparam file="$(find rrt_planner)/param/move_base_params.yaml" command="load" />
-    <rosparam file="$(find rrt_planner)/param/dwa_local_planner_params_$(arg model).yaml" command="load" />
+    <rosparam file="$(find rrt_planner)/param/$(arg param_set)/costmap_common_params_$(arg model).yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find rrt_planner)/param/$(arg param_set)/costmap_common_params_$(arg model).yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find rrt_planner)/param/$(arg param_set)/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find rrt_planner)/param/$(arg param_set)/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find rrt_planner)/param/$(arg param_set)/move_base_params.yaml" command="load" />
+    <rosparam file="$(find rrt_planner)/param/$(arg param_set)/dwa_local_planner_params_$(arg model).yaml" command="load" />
 
     <param name="DWAPlannerROS/min_vel_x" value="0.0" if="$(arg move_forward_only)"/>
     <param name="planner_frequency" value="0.0" />
