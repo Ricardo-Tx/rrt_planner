@@ -27,15 +27,16 @@ namespace rrt_planner {
         double dist = computeDistance(point_a, point_b);
 
         if (dist < resolution_) {
-            return ( !inFreeSpace(point_b) ) ? true : false;
-
+            return !inFreeSpace(point_b);
         } else {
             int num_steps = static_cast<int>(floor(dist / resolution_));
 
             double point_i[2];
+            double t = 0.0; // lerp parameter
             for (int n = 1; n <= num_steps; n++) {
-                point_i[0] = point_a[0] + n * (point_b[0] - point_a[0]) / num_steps;
-                point_i[1] = point_a[1] + n * (point_b[1] - point_a[1]) / num_steps;
+                t = n / num_steps;
+                point_i[0] = point_a[0] + (point_b[0] - point_a[0]) * t;
+                point_i[1] = point_a[1] + (point_b[1] - point_a[1]) * t;
 
                 if ( !inFreeSpace(point_i) ) return true;
             }
