@@ -1,0 +1,13 @@
+<launch>
+  <!-- Arguments -->
+  <arg name="model" default="waffle_pi"/>
+  <arg name="rate" default="2"/>
+  <arg name="bag_name" default=""/>
+
+  <param name="/use_sim_time" value="true"/>
+  <node pkg="rosbag" type="play" name="rosbag_player" 
+    args="--clock -r $(arg rate) $(arg bag_name)"/>
+  <!-- rviz -->
+  <node pkg="rviz" type="rviz" name="rviz" required="true" args="-d $(find rrt_planner)/rviz/rrt_turtlebot_sim.rviz"/>
+
+</launch>
